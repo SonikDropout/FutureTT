@@ -1,0 +1,66 @@
+.modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 500px;
+	height: 280px;
+	border-radius: .25rem;
+	border: 1px solid #ccc;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal__title {
+	font-size: 2rem;
+	margin: 1rem 0;
+	text-align: center;
+}
+
+.modal__body {
+  flex-grow: 1;
+	display: flex;
+  flex-direction: column;
+	padding: 1rem 2rem;
+}
+
+.modal__text {
+	font-size: 1.1rem;
+  flex-grow: 1;
+}
+
+.modal__controls {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.btn {
+	color: #fff;
+	background-color: #007bff;
+	border: 1px solid #007bff;
+	border-radius: .25rem;
+	padding: .375rem .75rem;
+	font-size: 1.1rem;
+	cursor: pointer;
+}
+
+.modal__btn:not(:last-child) {
+	margin-right: .7rem;
+}
+
+.modal__loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #007bff;
+  border-bottom: 16px solid #007bff;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

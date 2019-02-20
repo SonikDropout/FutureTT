@@ -1,0 +1,15 @@
+.search {
+  margin: .5rem 0;
+}
+
+.serach__input,
+.search__btn {
+  display: inline-block;
+}
+
+.search__input {
+  margin-right: 1rem;
+  border-radius: .25rem;
+  border: 1px solid;
+  padding: .375rem .75rem;
+}
