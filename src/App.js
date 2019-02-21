@@ -1,18 +1,44 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Popup from './components/Popup';
 import CustomersTable from './components/CustomersTable';
-import fakeJSONRqeust from './fakeData/fakeJSON';
+import Pagination from './components/Pagination';
 import fakeShortData from './fakeData/shortList.json';
 import fakeFullData from './fakeData/fullList.json';
 import SearchBar from './components/SearchBar';
 
 class App extends Component {
-  state = {
-    customers: [],
-    isDataSetChosen: false,
-    isDataLoaded: false,
-    isErrorLoading: false,
-    currentPage: 1
+  constructor(props) {
+    super(props);
+    this.customersPerPage = 50;
+    this.fullListLength = 1000;
+    this.shortListLength = 32;
+    this.state = {
+      customers: [],
+      isFullListRequested: false,
+      isShortListRequested: false,
+      isDataLoaded: false,
+      isErrorLoading: false,
+      currentPage: 1
+    }
+  }
+
+  renderPopup() {
+    if (!this.state.isDataSetChosen) {
+      return  <Popup loadData={this.loadCustomers}
+                     fullListLength={this.fullListLength}
+                     shortListLength={this.shortListLength}
+              />; 
+    } else if (!this.state.isDataLoaded) {
+      return <Popup loading={true}/>
+    }
+  }
+
+  loadCustomers = number => {
+    this.switchStateToLoading();
+    this.fetchFakeAPI(number).then(customers => {
+      this.setLoadedCustomers(customers)
+    }).catch(err => this.handleError(number));
   }
 
   switchStateToLoading() {
@@ -21,81 +47,69 @@ class App extends Component {
     })
   }
 
-  // TODO implement loading full fake data
-  handleError() {
-    this.setState({
-      customers: fakeShortData,
-      isDataLoaded: true
-    });
+  fetchFakeAPI = async (number) => {
+    const response = await axios.get(
+      'http://www.filltext.com/', {
+        params: {
+          rows: number,
+          id: '{number|1000}',
+          firstName: '{firstName}',
+          lastName: '{lastName}',
+          email: '{email}',
+          phone: '{phone|(xxx)xxx-xx-xx}',
+          address: '{addressObject}',
+          description: '{lorem|32}'
+        }
+      });
+    return JSON.parse(response);
   }
 
-  setLoadedCustomers(data) {
+  setLoadedCustomers(customers) {
+    // just a little hack to avoid same id 
+    // for multiple customers
+    customers.forEach((customer, index) => {
+      customer.id = index + 1;
+    })
     this.setState({
-      customers: data.sort((customer1, customer2) => {
-          return customer1.id - customer2.id;
-        }),
+      customers: customers,
       isDataLoaded: true
     })
   }
 
-  fetchFakeAPI = async (number) => {
-    const response = await fetch(
-      `http://www.filltext.com/?rows=${number}
-      &id={number|1000}
-      &firstName={firstName}
-      &lastName={lastName}
-      &email={email}
-      &phone={phone|(xxx)xxx-xx-xx}
-      &address={addressObject}
-      &description={lorem|32}`);
-    return await response.json();
-  }
-
-  loadCustomers = number => {
-    this.switchStateToLoading();
-    this.fetchFakeAPI(number).then(customers => {
-      this.setLoadedCustomers(customers)
-    }).catch(err => this.handleError());
-  }
-
-  renderPopup() {
-    if (!this.state.isDataSetChosen) {
-      return  <Popup loadData={this.loadCustomers}/>; 
-    } else if (!this.state.isDataLoaded) {
-      return <Popup loading={true}/>
+  handleError(number) {
+    switch (number) {
+      case this.fullListLength:
+        this.setState({
+          customers: fakeFullData,
+          isDataLoaded: true
+        });
+        break;
+      default:
+        this.setState({
+          customers: fakeShortData,
+          isDataLoaded: true
+        });
+        break;
     }
   }
 
   renderTable() {
     if (this.state.isDataLoaded) {
-      return <CustomersTable customers={this.customersChunk} />
+      return <CustomersTable currentPage={this.state.currentPage} customers={this.customersChunk} />
     }
   }
 
   get customersChunk() {
-    let currentChunk = (this.state.customers.length > 50) ? 
+    let currentChunk = (this.state.customers.length > this.customersPerPage) ? 
       this.state.customers.slice(
-        (this.currentPage - 1)*50,
-         this.currentPage
+        (this.state.currentPage - 1)*this.customersPerPage,
+         this.state.currentPage * this.customersPerPage
         ):
       this.state.customers;
     if (this.state.searchQuery) {
       return this.filterCustomersBySearchQuery(currentChunk);
     }
     return currentChunk;
-  }
-
-  filterCustomersProperties(customers) {
-    let customersInfo = [];
-    for (let customer of customers) {
-      let customerInfo = Object.entries(customer).slice(0,5).reduce((obj, [key, value]) => {
-        obj[key] = value;
-        return obj;
-      }, {});
-      customersInfo.push(customerInfo);
-    }
-    console.log(customersInfo);
-    return customersInfo;
   }
 
   filterCustomersBySearchQuery(customers) {
@@ -113,6 +127,19 @@ class App extends Component {
     return results;
   }
 
+  filterCustomersProperties(customers) {
+    let customersInfo = [];
+    for (let customer of customers) {
+      let customerInfo = Object.entries(customer).slice(0,5).reduce((obj, [key, value]) => {
+        obj[key] = value;
+        return obj;
+      }, {});
+      customersInfo.push(customerInfo);
+    }
+    console.log(customersInfo);
+    return customersInfo;
+  }
+
   renderSearchBar() {
     if (this.state.isDataLoaded) {
       return <SearchBar searchInfo={this.searchInfo} />
@@ -125,12 +152,26 @@ class App extends Component {
     })
   }
 
+  renderPaginatinon() {
+    const maxPages = Math.ceil(this.state.customers.length/this.customersPerPage);
+    if (this.state.isDataLoaded && maxPages > 1) {
+      return <Pagination maxPages={maxPages} page={this.state.currentPage} setCurrentPage={this.setCurrentPage} />
+    }
+  }
+
+  setCurrentPage = (number) => {
+    this.setState({
+      currentPage: number
+    })
+  }
+
   render() {
     return (
       <div className="container">
         {this.renderPopup()}
         {this.renderSearchBar()}
         {this.renderTable()}
+        {this.renderPaginatinon()}
       </div>
     );
   }

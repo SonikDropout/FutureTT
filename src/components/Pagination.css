@@ -1,0 +1,10 @@
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.btn:disabled {
+  opacity: .6;
+  cursor: default;
+}

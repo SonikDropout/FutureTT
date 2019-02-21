@@ -5,10 +5,10 @@
 .info__textarea {
   display: block;
   width: 100%;
+  border: 1px solid rgba(0, 0, 0, .5);
 }
 
 .info__row {
-  width: 300px;
   padding: .25rem .5rem;
 }
 

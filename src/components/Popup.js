@@ -4,11 +4,11 @@ import './Popup.css';
 class Popup extends Component {
 
   loadFullData = () => {
-    this.props.loadData(1000);
+    this.props.loadData(this.props.fullListLength);
   }
 
   loadShortData = () => {
-    this.props.loadData(25);
+    this.props.loadData(this.props.shortListLength);
   }
 
   get modalTitle() {

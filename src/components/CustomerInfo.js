@@ -11,7 +11,7 @@ class CustomerInfo extends Component {
         </p>
         <p className="info__row">
           Description: 
-          <textarea className="info__textarea" rows="8" defaultValue={this.props.info.about} />
+          <textarea className="info__textarea" rows="8" defaultValue={this.props.info.description} />
         </p>
         <p className="info__row">
           Street address: 

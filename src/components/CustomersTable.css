@@ -20,6 +20,7 @@
 
 .table__cell {
   padding: .25rem .5rem;
+  white-space: nowrap;
 }
 
 .table__row.selected {
@@ -30,10 +31,10 @@
   content: "\00a0 \00a0";
 }
 
-.table__cell.sortedDesc:after {
+.table__cell.sortedAsc:after {
   content: " \25be";
 }
 
-.table__cell.sortedAsc:after {
+.table__cell.sortedDesc:after {
   content: " \25b4";
 }

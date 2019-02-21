@@ -9,6 +9,14 @@ class CustomerTable extends Component {
     sorted: {
       key: 'id',
       isDescending: true
+    },
+  }
+
+  // unset selected row when turning page
+  componentWillUpdate(nextProps, nextState) {
+    if (this.props.currentPage !== nextProps.currentPage) {
+      nextState.selectedRow = null;
+      nextState.selectedCustomerId = null;
     }
   }
 
@@ -42,8 +50,8 @@ class CustomerTable extends Component {
     if (this.state.selectedCustomerId) {
       const customerInfo = this.props.customers.filter(customer => {
         return customer.id === this.state.selectedCustomerId;
-      });
-      return <CustomerInfo info={customerInfo[0]} />
+      })[0];
+      return <CustomerInfo info={customerInfo} />
     }
   }
 

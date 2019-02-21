@@ -16,7 +16,7 @@ class SearchBar extends Component {
   render() {
     return (
       <form className="search">
-        <input className="search__input" name="search" type="text" placeholder="filter" onChange={this.handleChange} />
+        <input className="search__input" name="search" type="text" placeholder="Search" onChange={this.handleChange} />
         <button className="search__btn btn" type="submit" onClick={this.handleSubmit}>Filter</button>
       </form>
     );

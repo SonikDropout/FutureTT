@@ -64,3 +64,18 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+@media screen and (max-width: 600px) {
+  .modal {
+    width: 300px;
+    height: 250px;
+  }
+
+  .modal__text {
+    text-align: center;
+  }
+
+  .modal__controls {
+    justify-content: space-between;
+  }
+}
