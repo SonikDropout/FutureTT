@@ -3,8 +3,8 @@ import axios from 'axios';
 import Popup from './components/Popup';
 import CustomersTable from './components/CustomersTable';
 import Pagination from './components/Pagination';
-import fakeShortData from './fakeData/shortList.json';
-import fakeFullData from './fakeData/fullList.json';
+import fakeShortData from './backupData/shortList.json';
+import fakeFullData from './backupData/fullList.json';
 import SearchBar from './components/SearchBar';
 
 class App extends Component {
