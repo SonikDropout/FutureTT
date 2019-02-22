@@ -14,6 +14,12 @@
   border-bottom: 1px solid #ddd;
 }
 
+.table__row.empty {
+  cursor: default;
+  font-style: italic;
+  text-align: center;
+}
+
 .table__body .table__row:hover {
   background-color: #DDD;
 }
