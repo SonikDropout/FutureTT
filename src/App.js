@@ -118,7 +118,6 @@ class App extends Component {
     let results = []
     for (let i = 0; i < customers.length; i++) {
       for (let property in onScreenData[i]) {
-        console.log(property)
         if (String(onScreenData[i][property]).indexOf(this.state.searchQuery) !== -1) {
           results.push(customers[i]);
           break;
