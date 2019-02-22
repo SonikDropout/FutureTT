@@ -113,17 +113,18 @@ class App extends Component {
   }
 
   filterCustomersBySearchQuery(customers) {
-    customers = this.filterCustomersProperties(customers);
+    // filter only those fields that get rendered in data table
+    let onScreenData = this.filterCustomersProperties(customers);
     let results = []
-    for (let customer of customers) {
-      for (let property in customer) {
-        if (String(customer[property]).search(this.state.searchQuery) !== -1) {
-          results.push(customer);
+    for (let i = 0; i < customers.length; i++) {
+      for (let property in onScreenData[i]) {
+        console.log(property)
+        if (String(onScreenData[i][property]).indexOf(this.state.searchQuery) !== -1) {
+          results.push(customers[i]);
           break;
         } 
       }
     }
-    console.log(results)
     return results;
   }
 
@@ -136,7 +137,6 @@ class App extends Component {
       }, {});
       customersInfo.push(customerInfo);
     }
-    console.log(customersInfo);
     return customersInfo;
   }
 

@@ -27,7 +27,7 @@ class Pagination extends Component {
     let links = [];
     let firstNumberInRow = (this.props.page > this.props.maxPages - 5) ? this.props.maxPages - 4: this.props.page;
     for (let i = firstNumberInRow; i < firstNumberInRow + 5; i++) {
-      links.push(<PaginationLink currentPage={this.props.page} setCurrentPage={this.props.setCurrentPage} correspondingPage={i} />);
+      links.push(<PaginationLink key={i} currentPage={this.props.page} setCurrentPage={this.props.setCurrentPage} correspondingPage={i} />);
     }
     return links;
   }
