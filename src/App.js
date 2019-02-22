@@ -15,10 +15,8 @@ class App extends Component {
     this.shortListLength = 32;
     this.state = {
       customers: [],
-      isFullListRequested: false,
-      isShortListRequested: false,
+      isDataSetChosen: false,
       isDataLoaded: false,
-      isErrorLoading: false,
       currentPage: 1
     }
   }
@@ -35,16 +33,12 @@ class App extends Component {
   }
 
   loadCustomers = number => {
-    this.switchStateToLoading();
+    this.setState({
+      isDataSetChosen: true
+    });
     this.fetchFakeAPI(number).then(customers => {
       this.setLoadedCustomers(customers)
     }).catch(err => this.handleError(number));
-  }
-
-  switchStateToLoading() {
-    this.setState({
-      isDataSetChosen: true
-    })
   }
 
   fetchFakeAPI = async (number) => {
@@ -77,19 +71,17 @@ class App extends Component {
   }
 
   handleError(number) {
-    switch (number) {
-      case this.fullListLength:
-        this.setState({
-          customers: fakeFullData,
-          isDataLoaded: true
-        });
-        break;
-      default:
-        this.setState({
-          customers: fakeShortData,
-          isDataLoaded: true
-        });
-        break;
+    // use backup data stored locally
+    if (number === this.fullListLength) {
+      this.setState({
+        customers: fakeFullData,
+        isDataLoaded: true
+      });
+    } else {
+      this.setState({
+        customers: fakeShortData,
+        isDataLoaded: true
+      });
     }
   }
 

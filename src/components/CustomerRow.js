@@ -4,7 +4,7 @@ import React, {PureComponent} from 'react';
 class CustomerRow extends PureComponent {
 
   handleClick = () => {
-    this.props.showInfoOnCustomer(this.props.info.id, this.props.number);
+    this.props.showInfoOnCustomer(this.props.info.id);
   }
 
   render() {

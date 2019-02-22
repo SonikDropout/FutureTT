@@ -13,10 +13,8 @@ class CustomerTable extends Component {
   }
 
   // unset selected row when turning page
-  // unset selected row when data gets filtered
   componentWillUpdate(nextProps, nextState) {
     if (this.props.currentPage !== nextProps.currentPage) {
-      nextState.selectedRow = null;
       nextState.selectedCustomerId = null;
     }
   }
@@ -66,10 +64,9 @@ class CustomerTable extends Component {
     return false;
   }
 
-  showInfoOnCustomer = (id, number) => {
+  showInfoOnCustomer = id => {
     this.setState({
-      selectedCustomerId: id,
-      selectedRow: number
+      selectedCustomerId: id
     })
   }
 
